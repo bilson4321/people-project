@@ -1,65 +1,64 @@
-import React from 'react';
-import './App.css';
-import PeopleDetail from './Component/PeopleDetail';
-import Header from './Component/Header';
+import React, { useEffect } from "react";
+import "./App.css";
+import PeopleDetail from "./Component/PeopleDetail";
+import Header from "./Component/Header";
+import peopleData from "./people.json";
 
+const App = () => {
+  const [people, setPeople] = React.useState([]);
+  const [detail, setDetail] = React.useState(false);
+  const [profile, setProfile] = React.useState({});
 
-class App extends React.Component{
-  constructor()
-    {
-      super();
-      this.state={
-        people:[],
-        detail:false,
-        profile:{}
-      }
-    }
-  componentDidMount()
-  {
-      fetch("https://mock-io.herokuapp.com/users?_limit=10")
-      .then(response=>response.json())
-      .then(response=>this.setState({people:response}))
-  }
-  render()
-  {
-    return (
-      <React.Fragment>
-        <Header />
-        <div className="container">
-        {
-          this.state.detail?
-            <PeopleDetail profile={this.state.profile} closeFunction={this.closeDetail} />
-            :
-            <ul>
-              {this.state.people.map((value)=>{
-                      return <li key={value.id}>
-                                <div className='thumbnail-profile' onClick={()=>this.onclick(value.id)}>
-                                  <img className='thumbnail-icon' src={value.profileImage}></img>
-                                  <div className='name-placeholder'>
-                                    {value.firstName} 
-                                    {"      "}
-                                    {value.lastName}
-                                  </div>
-                                </div>                
-                              </li>
-                      })}
-            </ul>
-        }
+  useEffect(() => {
+    setTimeout(() => {
+      setPeople(peopleData);
+    }, 1000);
+  }, []);
+
+  const onclick = (id) => {
+    setDetail(true);
+    setProfile(people.find((person) => person.id === id));
+  };
+
+  const closeDetail = () => {
+    setDetail(false);
+    setProfile({});
+  };
+
+  return (
+    <>
+      <Header />
+      <div className="container">
+        {detail ? (
+          <PeopleDetail profile={profile} closeFunction={closeDetail} />
+        ) : (
+          <ul>
+            {people.map((value) => {
+              return (
+                <li key={value.id}>
+                  <div
+                    className="thumbnail-profile"
+                    onClick={() => onclick(value.id)}
+                  >
+                    <img
+                      alt="thumbnail"
+                      className="thumbnail-icon"
+                      src={value.profileImage}
+                    ></img>
+                    <div className="name-placeholder">
+                      {value.firstName}
+                      {"      "}
+                      {value.lastName}
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
       </div>
-      </React.Fragment>
-      )
-  }
-  onclick(id)
-  {
-    console.log("id of:",id);
-    this.setState({detail:true}); 
-    this.setState({profile:this.state.people[id-1]});
-  }
-  closeDetail=()=>
-  {
-    this.setState({detail:false});
-    this.setState({profile:{}});
-    console.log("stop");
-  }
-}
+    </>
+  );
+};
+
 export default App;

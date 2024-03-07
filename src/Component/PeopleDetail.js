@@ -1,47 +1,41 @@
-import React from 'react';
-import './PeopleDetail.css';
+import React from "react";
+import "./PeopleDetail.css";
 
-class PeopleDetail extends React.Component{
-  constructor(props)
-    {
-      super(props);
-    }
-  render()
-  {
-    
-    return (
-      
-      <div className="container">
-        {
-          <React.Fragment>
-            <div className="image-holder">
-              <img className='profile-image' src={this.props.profile.profileImage}></img>
-              <div className="close-button" onClick={()=>this.onclick()}>X</div>
-            </div>
-            <div>
-              <h2><u>Details</u></h2>
-              <label>Name : </label>
-              <span>{this.props.profile.firstName} </span>
-              <span>{this.props.profile.lastName}</span><br />
-              <label>Phone : </label>
-              <span>{this.props.profile.phone}</span><br />
-              <label>Email : </label>
-              <span>{this.props.profile.email}</span><br />
-              <label>Address : </label>
-              <span>
-                {this.props.profile.address.city}, {this.props.profile.address.state}, {this.props.profile.address.country} <br />
-                {this.props.profile.address.zipCode}, {this.props.profile.address.countryCode}, {this.props.profile.address.streetAddress}
-              </span>
-           </div>
-          </React.Fragment>
-        }
+const PeopleDetail = (props) => {
+  return (
+    <div className="container">
+      <div className="image-holder">
+        <img
+          alt="Profile"
+          className="profile-image"
+          src={props.profile.profileImage}
+        ></img>
+        <div className="close-button" onClick={() => props.closeFunction()}>
+          X
+        </div>
       </div>
-      )
-  }
-  onclick()
-  {
-    this.props.closeFunction();
-    console.log("Close");
-  }
-}
+      <div>
+        <h2>Details</h2>
+        <label>Name : </label>
+        <span>{props.profile.firstName} </span>
+        <span>{props.profile.lastName}</span>
+        <br />
+        <label>Phone : </label>
+        <span>{props.profile.phone}</span>
+        <br />
+        <label>Email : </label>
+        <span>{props.profile.email}</span>
+        <br />
+        <label>Address : </label>
+        <span>
+          {props.profile.address.city}, {props.profile.address.state},{" "}
+          {props.profile.address.country} <br />
+          {props.profile.address.zipCode}, {props.profile.address.countryCode},{" "}
+          {props.profile.address.streetAddress}
+        </span>
+      </div>
+    </div>
+  );
+};
+
 export default PeopleDetail;
